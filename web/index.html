@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>EthCore - Georgios Paralykidis</title>
+
+<!-- CSS Resources -->
+<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="resources/css/font-awesome.css" rel="stylesheet">
+<link href="resources/css/main.css" rel="stylesheet">
+
+<!-- AngularJS -->
+<script src="resources/angular/1.4.7/angular.js"></script>
+<script src="resources/angular/1.4.7/angular-route.js"></script>
+<script src="resources/angular/libs/ui-router/0.2.15/angular-ui-router.min.js"></script>
+
+<!-- EthCore.IO javascript advert data -->
+<script src="resources/ethcore/javascript_ad.js"></script>
+
+<!-- JQuery -->
+<script src="resources/js/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="resources/js/bootstrap.min.js"></script>
+
+<!-- Scripts -->
+<script src="resources/js/scripts.js"></script>
+<script src="resources/js/DateTool.js"></script>
+<script src="resources/js/TimeTool.js"></script>
+
+<!-- Angular Slider -->
+<script src="resources/angular/libs/angular-slider/rzslider.min.js"></script>
+<link rel="stylesheet" type="text/css" href="resources/angular/libs/angular-slider/rzslider.css" />
+
+<!-- Angular progressbar -->
+<script src="resources/angular/libs/ui-progressbar/progressbar.js"></script>
+
+<!-- EthCore.IO logo -->
+<link rel="icon" type="image/png" href="favicon.png">
+
+<!-- Chart.js -->
+<script src="resources/chartjs/chart.js"></script>
+
+<!-- My resources -->
+<script src="app.js"></script>
+<script src="pages/view.controller.js"></script>
+<script src="services/data.service.js"></script>
+<script src="services/dataBeautifier.service.js"></script>
+<script src="services/chart.service.js"></script>
+
+</head>
+
+<body>
+    <div class="container" ng-controller="ViewController as vm">
+
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div id="photo-header" class="text-center">
+                    <div id="photo">
+                        <img src="resources/img/logo.png" alt="avatar">
+                    </div>
+                    <div id="text-header">
+                        <h1>{{vm.get("headline")}}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-7">
+
+                <!-- ABOUT THE POSITION -->
+
+                <div class="box">
+                    <uib-progress> <uib-bar ng-repeat="stack in vm.stacks" value="stack.value" type="{{stack.type}}"> </uib-bar></uib-progress>
+
+                    <h2>About the Position</h2>
+                    <p>
+                        We are looking for a talented individual to work with us on a {{vm.get('essentials.employment').toLowerCase()}} basis, in our offices at <span
+                            ng-repeat="location in vm.get('essentials.locations')">{{location}}{{$last ? '' : ' and '}}</span> with the starting date being
+                        {{vm.getDate(vm.get('essentials.startdate'))}}. The {{vm.get('essentials.salary.interval').toLowerCase()}}ly {{vm.get('essentials.salary.status').toLowerCase()}} compensation
+                        offered is {{vm.get('essentials.salary.amount')}} {{vm.get('essentials.salary.currency')}}<span ng-if="vm.get('essentials.salary.stockoptions')">, although there are
+                            also stock options available</span>. Ideally, we want someone who is excited about the {{vm.get('essentials.industry')}} industry and it's implications in real life.
+                    <p>
+                        There will be {{vm.get('specs.travel').toLoweCase()}} chances to travel around, as well as <span ng-repeat="conferencePotential in vm.get('misc.conferences')">{{conferencePotential.toLowerCase()}}{{$last
+                            ? '' : ' and '}}</span> at many prestigious conferences.
+                    </p>
+
+                    <h3 align="center">Team Size</h3>
+                    <div>
+                        <rzslider rz-slider-model="teamSlider.min" rz-slider-high="teamSlider.max" rz-slider-options="teamSlider.options"></rzslider>
+                    </div>
+                    <h3 align="center">Company size</h3>
+                    <div>
+                        <rzslider rz-slider-model="companySlider.min" rz-slider-high="companySlider.max" rz-slider-options="companySlider.options"></rzslider>
+                    </div>
+                    <h3 align="center">Core working hours</h3>
+                    <div>
+                        <rzslider rz-slider-model="hoursSlider.min" rz-slider-high="hoursSlider.max" rz-slider-options="hoursSlider.options"></rzslider>
+                    </div>
+                    <h3 align="center">Holiday days</h3>
+                    <div>
+                        <rzslider rz-slider-model="holidaySlider.min" rz-slider-options="holidaySlider.options"></rzslider>
+                    </div>
+
+                    <h3 align="center">Work Profile</h3>
+                    <canvas id="myChart" ng-init="vm.getChart()"></canvas>
+                </div>
+
+                <!-- METHODOLOGY -->
+
+                <div class="box">
+                    <h2>Methodology</h2>
+                    <ul id="education" class="clearfix">
+                        <li ng-repeat="method in vm.get('methodology')" ng-if="vm.isMethodologyUsed(method) == true">
+                            <div class="year" align="center">
+                                <i class="fa fa-check-circle fa-lg" aria-hidden="true" style="color: #C0C3C4"></i>
+                            </div>
+                            <div class="description pull-right">
+                                <p ng-if="vm.isMethodologyUsed(method) == true">{{vm.getMethodologyText(method)}}</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="col-xs-12 col-sm-5">
+
+                <!-- TOOLS -->
+
+                <div class="box clearfix">
+                    <h2>Tools</h2>
+                    <div class="contact-item">
+                        <div class="icon pull-left text-center">
+                            <span class="fa fa-code-fork" style="width: 18px;"></span>
+                        </div>
+                        <div class="title pull-right">Version Control</div>
+                        <div class="description pull-right">{{vm.get('methodology.versioncontrol')}}</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon pull-left text-center">
+                            <span class="fa fa-linux"></span>
+                        </div>
+                        <div class="title pull-right">Operating Systems</div>
+                        <div class="description pull-right">{{vm.get('equipment.operatingsystem').toString()}}</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon pull-left text-center">
+                            <span class="fa fa-check-square-o"></span>
+                        </div>
+                        <div class="title pull-right">CI / Testing / Deployment Automation</div>
+                        <div class="description pull-right">{{vm.get('methodology.buildserver')}} (Code analysis tool: {{vm.beautify(vm.get('methodology.staticcodeanalysis'))}})</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon pull-left text-center">
+                            <span class="fa fa-bug"></span>
+                        </div>
+                        <div class="title pull-right">Project Management / Bug tracking</div>
+                        <div class="description pull-right">{{vm.get('methodology.agilemanagement')}}, {{vm.get('methodology.issuetracker')}}, {{vm.get('methodology.knowledgerepo')}}</div>
+                    </div>
+                </div>
+
+                <!-- TECHNOLOGIES -->
+
+                <div class="box">
+                    <h2>Technologies</h2>
+                    <div class="skills">
+                        <div ng-repeat="technology in vm.get('technologies')">
+                            <div ng-if="!technology.startsWith('oneof')" class="item-skills" data-percent={{vm.getLevel(technology)}}>{{vm.getTechnology(technology)}}</div>
+                        </div>
+                        <div class="skills-legend clearfix">
+                            <div class="legend-left legend"></div>
+                            <div class="legend-left legend">Noob</div>
+                            <div class="legend-left legend">
+                                <span>Familiar</span>
+                            </div>
+                            <div class="legend-left legend">
+                                <span>Good</span>
+                            </div>
+                            <div class="legend-right legend">Expert</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other skills -->
+
+                <div class="box">
+                    <h2>Other skills</h2>
+                    <div id="other-skills">
+                        <p>The candidate should also have knowledge of at least one of each group of technologies:</p>
+                        <div ng-repeat="oneof in vm.oneOfSkills" class="skill">
+                            <span ng-repeat="o in oneof">{{vm.getOneOf(o)}}{{$last ? '' : ', '}}</span>
+                            <div class="icons pull-right">
+                                <div ng-if="oneof.indexOf('mocha') !=-1" style="width: 80%;" class="icons-red"></div>
+                                <div ng-if="oneof.indexOf('react') !=-1" style="width: 40%;" class="icons-red"></div>
+                                <div ng-if="oneof.indexOf('rust') !=-1" style="width: 40%;" class="icons-red"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MindSet -->
+
+                <div class="box">
+                    <h2>Mindset</h2>
+                    <div ng-repeat="mindset in vm.get('other')" class="mindset">{{mindset.charAt(0).toUpperCase() + mindset.slice(1);}}!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

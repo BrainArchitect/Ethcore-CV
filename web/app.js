@@ -1,28 +1,28 @@
 (function() {
 
-	'use strict';
+    'use strict';
 
-	var app = angular.module('app', []);
-	app.run(run);
+    var app = angular.module('app', [ 'ngRoute', 'ui.router', 'rzModule' ]);
 
-	run.$inject = [ '$rootScope', '$log' ];
+    app.config(config);
+    app.run(run);
 
-	function run($scope, $log) {
-		$scope.get = getD;
+    config.$inject = [ '$stateProvider' ];
+    function config($stateProvider) {
 
-		function getD(s) {
-			var parts = s.split(".");
+        $stateProvider.state('view', {
+            url : '/',
+            controller : "ViewController",
+            templateUrl : 'index.html',
+            controllerAs : 'vm'
+        })
 
-			if (Object.prototype.toString.call(parts) != '[object Array]') {
-				return job.parts;
-			}
-			var result = job;
-			for (var i = 0; i < parts.length; i++) {
-				result = result[parts[i]];
-			}
-			return result;
-		}
+    }
 
-	}
+    run.$inject = [ '$rootScope', '$log', '$state' ];
+
+    function run($scope, $log, $state) {
+        $state.go("view");
+    }
 
 })();
