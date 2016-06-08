@@ -137,6 +137,5 @@
             }
             return result;
         }
-
     }
 })();
