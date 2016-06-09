@@ -1,5 +1,5 @@
 
-<div class="container" ng-controller="ViewController as vm">
+<div class="container" ng-controller="MainController as vm">
 
     <div class="row">
 
@@ -138,11 +138,12 @@
                 <div id="other-skills">
                     <p>The candidate should also have knowledge of at least one of each group of technologies:</p>
                     <div ng-repeat="oneof in vm.oneOfSkills" class="skill">
-                        <span ng-repeat="o in oneof">{{vm.getOneOf(o)}}{{$last ? '' : ', '}}</span>
+                        <span ng-repeat="o in oneof">{{vm.beautifyOneOf(o)}}{{$last ? '' : ', '}}</span>
                         <div class="icons pull-right">
-                            <div ng-if="oneof.indexOf('mocha') !=-1" style="width: 80%;" class="icons-red"></div>
-                            <div ng-if="oneof.indexOf('react') !=-1" style="width: 40%;" class="icons-red"></div>
-                            <div ng-if="oneof.indexOf('rust') !=-1" style="width: 40%;" class="icons-red"></div>
+                            <div ng-if="vm.getLevelOneOf(oneof[0]) == 'Expert'" style="width: 100%" class="icons-red"></div>
+                            <div ng-if="vm.getLevelOneOf(oneof[0]) == 'Good'" style="width: 80%" class="icons-red"></div>
+                            <div ng-if="vm.getLevelOneOf(oneof[0]) == 'Familiar'" style="width: 40%" class="icons-red"></div>
+
                         </div>
                     </div>
                 </div>

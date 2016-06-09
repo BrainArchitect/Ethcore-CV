@@ -12,8 +12,8 @@
 
         $stateProvider.state('view', {
             url : '/',
-            controller : "ViewController",
-            templateUrl : 'main.view.html',
+            controller : "MainController",
+            templateUrl : 'pages/main.view.html',
             controllerAs : 'vm'
         })
 

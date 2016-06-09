@@ -35,10 +35,10 @@
                 if (data.technologies.hasOwnProperty(oneof)) {
                     if (oneof.startsWith("oneof")) {
                         result.push(getData("technologies." + oneof));
-                        delete data.technologies[oneof];
                     }
                 }
             }
+            $log.info("OneOfSkills finally:");
             $log.info(result);
             return result;
         }

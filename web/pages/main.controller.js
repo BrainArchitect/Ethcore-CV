@@ -2,11 +2,11 @@
 
     'use strict';
 
-    angular.module("app").controller('ViewController', ViewController);
+    angular.module("app").controller('MainController', MainController);
 
-    ViewController.$inject = [ '$scope', '$log', 'DataService', 'DataBeautifierService', "ChartService" ];
+    MainController.$inject = [ '$scope', '$log', 'DataService', 'DataBeautifierService', "ChartService" ];
 
-    function ViewController($scope, $log, DataService, DataBeautifierService, ChartService) {
+    function MainController($scope, $log, DataService, DataBeautifierService, ChartService) {
         var vm = this;
 
         vm.get = getD;
@@ -18,8 +18,8 @@
         vm.getTechnology = DataBeautifierService.getTechnology;
         vm.getChart = getChart;
         vm.getOneOfSkills = getOneOfSkills;
-        vm.getOneOf = getOneOf;
-        vm.val2key = val2key;
+        vm.beautifyOneOf = beautifyOneOf;
+        vm.getLevelOneOf = getLevelOneOf;
 
         init();
 
@@ -127,16 +127,27 @@
             return DataService.getOneOfSkills();
         }
 
-        function getOneOf(o) {
+        function beautifyOneOf(o) {
             return o.charAt(0).toUpperCase() + o.slice(1);
         }
 
-        function val2key(val, array) {
-            $log.info("got in!");
-            for ( var key in array) {
-                this_val = array[key];
-                if (this_val == val) {
-                    return key;
+        function getLevelOneOf(o) {
+            return getValue(job.technologies, o);
+        }
+
+        function getValue(obj, name) {
+            for ( var key in obj) {
+                if (key.toString() == name) {
+                    return obj[name];
+                }
+                if (obj.hasOwnProperty(key)) {
+                    if ("object" == typeof (obj[key])) {
+                        if (getValue(obj[key], name) != undefined) {
+                            return getValue(obj[key], name);
+                        } else {
+                            continue;
+                        }
+                    }
                 }
             }
         }
