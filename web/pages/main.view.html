@@ -27,7 +27,8 @@
                     We are looking for a talented individual to work with us on a {{vm.get('essentials.employment').toLowerCase()}} basis, in our offices at <span
                         ng-repeat="location in vm.get('essentials.locations')">{{location}}{{$last ? '' : ' and '}}</span> with the starting date being {{vm.getDate(vm.get('essentials.startdate'))}}.
                     The {{vm.get('essentials.salary.interval').toLowerCase()}}ly {{vm.get('essentials.salary.status').toLowerCase()}} compensation offered is {{vm.get('essentials.salary.amount')}}
-                    {{vm.get('essentials.salary.currency')}}<span ng-if="vm.get('essentials.salary.stockoptions')">, although there are also stock options available</span>. Ideally, we want someone
+                    {{vm.get('essentials.salary.currency')}}<span ng-if="vm.get('essentials.salary.stockoptions')">, although there are also stock options available</span>. Working remotely is something 
+                    we are <span ng-if="vm.get('specs.remote') !='Negotiable'">not</span> willing to negotiate<span ng-if="vm.get('specs.relocationpackage') =='Negotiable'">; the same for offering a suitable relocation package</span>. Ideally, we want someone
                     who is excited about the {{vm.get('essentials.industry')}} industry and it's implications in real life.
                 <p>
                     There will be {{vm.get('specs.travel').toLoweCase()}} chances to travel around, as well as <span ng-repeat="conferencePotential in vm.get('misc.conferences')">{{conferencePotential.toLowerCase()}}{{$last
